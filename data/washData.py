@@ -17,7 +17,7 @@ import argparse
 import random
 from tqdm import tqdm
 
-def is_black_image(image, threshold=100):
+def is_black_image(image, threshold=10000):
     # 检查图像是否是全黑
     #Check if the image is all black
     return cv2.countNonZero(image) < threshold
@@ -133,7 +133,7 @@ def random_selectData(src_dir,dest_dir,num):
     selected_images = random.sample(image_files, num)
 
     # 复制选择的图片到目标目录
-    for image in selected_images:
+    for image in tqdm(selected_images,desc='随机挑选图片中'):
         src_path = os.path.join(src_dir, image)
         dest_path = os.path.join(dest_dir, image)
         shutil.copy(src_path, dest_path)
@@ -147,12 +147,12 @@ if __name__ == '__main__':
     Root = os.path.dirname(os.path.abspath(__file__))
     os.chdir(Root)
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ImageFolder',type=str,default=r'E:\OCRSceneImage\TrkDetect\Image',help='图像的原始目录')
+    parser.add_argument('--ImageFolder',type=str,default=r'E:\data\OCR\6-29.30Con',help='图像的原始目录')
     parser.add_argument('--blackPath',type=str,default='',help='去除的黑图存放地址')
     parser.add_argument('--duplicatePath',type=str,default='',help='去除的重复图存放地址')
     parser.add_argument('--duplicateMethod',type=str,default='hash',help='去除重复图的方法')
-    parser.add_argument('--dataNum',type=int,default=0,help='随机挑选多少条数据，默认0为全选')
-    parser.add_argument('--selectedFolder',type=str,default=os.path.join(Root,'selected'),help='若启用随机挑选，指定挑选后的图片指定目录')
+    parser.add_argument('--dataNum',type=int,default=2000,help='随机挑选多少条数据，默认0为全选')
+    parser.add_argument('--selectedFolder',type=str,default=os.path.join(Root,'selectedCon'),help='若启用随机挑选，指定挑选后的图片指定目录')
     opt = parser.parse_args()
     #打印参数
     print(opt)

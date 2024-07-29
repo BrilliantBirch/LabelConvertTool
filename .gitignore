@@ -165,6 +165,9 @@ cython_debug/
 # 图片
 *.jpg
 *.png
+#Label
+labelConvert/YOLO/
 
 #IDE
 .vscode
+
