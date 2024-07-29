@@ -14,6 +14,7 @@ import cv2
 import hashlib
 import shutil
 import argparse
+import random
 from tqdm import tqdm
 
 def is_black_image(image, threshold=100):
@@ -105,7 +106,7 @@ def remove_duplicates_and_black_images(opt):
                         image_descriptors.append(descriptors)
     print(f'删除黑图{blackcount}张，删除重复图片{duplicatecount}张')
 
-def random_selectData(src_dir,det_dir,num):
+def random_selectData(src_dir,dest_dir,num):
     """随机挑选指定张图片到指定目录
        Randomly selects a specified image to a specified directory
 
@@ -114,24 +115,48 @@ def random_selectData(src_dir,det_dir,num):
         det_dir (str): 指定目录
         num (str): 指定数量
     """
+    if not os.path.exists(src_dir):
+        raise ValueError(f"Source directory {src_dir} does not exist.")
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
 
-    pass
+    # 获取源目录中的所有文件
+    all_files = os.listdir(src_dir)
 
-def main():
+    # 过滤出所有的图片文件（可以根据实际情况调整扩展名）
+    image_files = [f for f in all_files if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
+
+    # 检查是否有足够的图片文件
+    if len(image_files) < num:
+        raise ValueError(f"Not enough images in {src_dir} to select {num} images.")
+    # 随机选择指定数目的图片
+    selected_images = random.sample(image_files, num)
+
+    # 复制选择的图片到目标目录
+    for image in selected_images:
+        src_path = os.path.join(src_dir, image)
+        dest_path = os.path.join(dest_dir, image)
+        shutil.copy(src_path, dest_path)
+
+def main(opt):
+    remove_duplicates_and_black_images(opt)
+    if(opt.dataNum!=0):
+        random_selectData(opt.ImageFolder,opt.selectedFolder,opt.dataNum)
+    
+if __name__ == '__main__':
+    Root = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(Root)
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ImageFolder',type=str,default=r'E:\data\OCR\TrkNameAutoLabelTest\6.29-6.30',help='图像的原始目录')
+    parser.add_argument('--ImageFolder',type=str,default=r'E:\OCRSceneImage\TrkDetect\Image',help='图像的原始目录')
     parser.add_argument('--blackPath',type=str,default='',help='去除的黑图存放地址')
     parser.add_argument('--duplicatePath',type=str,default='',help='去除的重复图存放地址')
     parser.add_argument('--duplicateMethod',type=str,default='hash',help='去除重复图的方法')
-    parser.add_argument('--dataNum',int,default=0,help='随机挑选多少条数据，默认0为全选')
-    parser.add_argument('--selectedFolder',type=str,help='若启用随机挑选，指定挑选后的图片指定目录')
+    parser.add_argument('--dataNum',type=int,default=0,help='随机挑选多少条数据，默认0为全选')
+    parser.add_argument('--selectedFolder',type=str,default=os.path.join(Root,'selected'),help='若启用随机挑选，指定挑选后的图片指定目录')
     opt = parser.parse_args()
     #打印参数
     print(opt)
-
-    remove_duplicates_and_black_images(opt)
-if __name__ == '__main__':
-    main()
+    main(opt)
     
     
     
