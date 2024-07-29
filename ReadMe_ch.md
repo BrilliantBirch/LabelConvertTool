@@ -1,0 +1,1 @@
+帮助清洗数据集中的不可用图片，提供Labelme标注的json文件与PaddleOCR所需标注格式和YOLO所需txt标注格式之间的互相转换
