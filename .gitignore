@@ -163,11 +163,13 @@ cython_debug/
 
 
 # 图片
-*.jpg
-*.png
+# *.jpg
+# *.png
 #Label
 labelConvert/YOLO/
-
+labelConvert/PPOCR/
+#dataset
+data/dataset/
 #IDE
 .vscode
 
