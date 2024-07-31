@@ -147,7 +147,7 @@ if __name__ == '__main__':
     Root = os.path.dirname(os.path.abspath(__file__))
     os.chdir(Root)
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ImageFolder',type=str,default=r'E:\data\OCR\6-29.30Con',help='图像的原始目录')
+    parser.add_argument('--ImageFolder',type=str,default=r'E:\OCRSceneImage\Trk',help='图像的原始目录')
     parser.add_argument('--blackPath',type=str,default='',help='去除的黑图存放地址')
     parser.add_argument('--duplicatePath',type=str,default='',help='去除的重复图存放地址')
     parser.add_argument('--duplicateMethod',type=str,default='hash',help='去除重复图的方法')
