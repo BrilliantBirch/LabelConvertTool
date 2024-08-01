@@ -7,7 +7,7 @@
                 Currently only polygonal and rectangular boxes are supported.
     Author:BrilliantBirtch(白彬楠)
     Date:2024/7/29
-    E-mail:990563378@qq.com
+    E-mail:xiaobai3924@gmail.com
 """
 import json
 import os
