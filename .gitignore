@@ -171,6 +171,6 @@ labelConvert/PPOCR/
 labelConvert/*.json
 #dataset
 data/dataset/
+output/
 #IDE
 .vscode
-

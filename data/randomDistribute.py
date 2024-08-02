@@ -8,7 +8,9 @@ E-mail:xiaobai3924@gmail.com
 import os
 import random
 import shutil
+import argparse
 from tqdm import tqdm
+
 def split_and_store_images(source_dir, target_base_dir, num_parts):
     # 获取所有图片文件的路径
     image_files = [f for f in os.listdir(source_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))]
@@ -35,12 +37,18 @@ def split_and_store_images(source_dir, target_base_dir, num_parts):
             shutil.move(source_path, target_path)
         
         start = end
+def parser():
+    parsers = argparse.ArgumentParser()
+    parsers.add_argument('--source',type=str,default=r'',help='源文件夹路径')
+    parsers.add_argument('--target',type=str,default=r'',help='目标文件夹路径')
+    parsers.add_argument('--nums',type=int,default=3,help='要均分的人数')
+    
+    opt = parsers.parse_args()
 
 def main():
-    source_directory = r''  # 替换为你的源文件夹路径
-    target_base_directory = r''  # 替换为你的目标基础文件夹路径
-    number_of_parts = 2  # 替换为你想要分成的份数
-    split_and_store_images(source_directory, target_base_directory, number_of_parts)
+    opt=parser()
+    
+    split_and_store_images(opt.source, opt.target, opt.nums)
 
 if __name__=='__main__':
     Root = os.path.dirname(os.path.abspath(__file__))
