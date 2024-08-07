@@ -174,3 +174,6 @@ data/dataset/
 output/
 #IDE
 .vscode
+data/process.py
+data/demo.py
+

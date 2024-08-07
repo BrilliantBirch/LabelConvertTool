@@ -29,7 +29,7 @@ def visualize_annotations(image_path, annotations):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def detect_anomalies(annotations, threshold_min_area=0.01, threshold_max_area=0.5):
+def detect_anomalies(annotations, threshold_min_area=1, threshold_max_area=1):
     anomalies = []
     for annotation in annotations:
         _, x_center, y_center, w, h = annotation

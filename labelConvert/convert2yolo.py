@@ -36,10 +36,13 @@ def convert_labelme(json_file,yoloOutputDir,ppocrOutputDir,class_mapping,image):
         class_mapping (str): the directory ppocr format annotation
         image (str): the origin image folder
     """
+    os.makedirs(ppocrOutputDir,exist_ok=True)
+    os.makedirs(os.path.join(yoloOutputDir,'labels'),exist_ok=True)
+    os.makedirs(os.path.join(yoloOutputDir,'images'),exist_ok=True)
     with open(json_file, 'r',encoding='utf-8') as f:
         data = json.load(f)
     yolo_annotations = []
-    ppocr_annotations=[]
+    ppocr_annotations=[]    
     image_height = data['imageHeight']
     image_width = data['imageWidth']
     for shape in data['shapes']:
@@ -74,6 +77,19 @@ def convert_labelme(json_file,yoloOutputDir,ppocrOutputDir,class_mapping,image):
             ppocrPoints=[p1,p2,p3,p4]
         else:
             continue
+         #ppocr format
+        if label == 'Text':
+            text=shape['description']
+            if text is None:
+                continue
+            text = text.strip()
+            ppocr_data = {
+                "transcription":text,
+                "points":ppocrPoints,
+                "difficult":False
+            }
+            ppocr_annotations.append(ppocr_data)
+            continue
         #yolo bbox format
         x_center = (xmin + xmax) / 2.0 / image_width
         y_center = (ymin + ymax) / 2.0 / image_height
@@ -81,16 +97,8 @@ def convert_labelme(json_file,yoloOutputDir,ppocrOutputDir,class_mapping,image):
         height = (ymax - ymin) / image_height
         class_id = class_mapping[label]
         yolo_annotations.append(f"{class_id} {x_center} {y_center} {width} {height}")
-        #ppocr format
-        if label == 'Text':
-            text=shape['description']
-            ppocr_data = {
-                "transcription":text,
-                "points":ppocrPoints,
-                "difficult":False
-            }
-            ppocr_annotations.append(ppocr_data)
-    ppocr_annotations=json.dumps(ppocr_annotations,ensure_ascii=False)
+       
+    
     image_name=os.path.basename(data['imagePath'])
     src_path=os.path.join(image,image_name)
     #export PPOCR image set
@@ -100,20 +108,21 @@ def convert_labelme(json_file,yoloOutputDir,ppocrOutputDir,class_mapping,image):
     fileState=os.path.join(ppocrOutputDir,'fileState.txt')
     Label = os.path.join(ppocrOutputDir,'Label.txt')
     folder_name = os.path.basename(ppocrOutputDir)
-    with open(Label,'a',encoding='utf-8') as l:
-        l.write(f'{folder_name}/{image_name}\t{ppocr_annotations}\n')
-    with open(fileState,'a',encoding='utf-8') as fs:
-        fs.write(f'{ppocrImageFile}\t1\n')
+    if ppocr_annotations.__len__()!=0:
+        ppocr_annotations=json.dumps(ppocr_annotations,ensure_ascii=False)
+        with open(Label,'a',encoding='utf-8') as l:
+            l.write(f'{folder_name}/{image_name}\t{ppocr_annotations}\n')
+        with open(fileState,'a',encoding='utf-8') as fs:
+            fs.write(f'{ppocrImageFile}\t1\n')
     #export YOLO image set
     yoloImageSet= os.path.join(yoloOutputDir,'images')
     yoloImageFile=os.path.join(yoloImageSet,image_name)
-    if os.path.exists(yoloImageSet)==False:
-        os.makedirs(yoloImageSet)
     shutil.copy(src_path,yoloImageFile)
     #output YOLO format
     output_yoloLabel = os.path.join(yoloOutputDir,'labels', os.path.splitext(os.path.basename(json_file))[0] + ".txt")
-    if(os.path.exists(os.path.dirname(output_yoloLabel))==False):
-        os.makedirs(os.path.dirname(output_yoloLabel))
+    with open(os.path.join(yoloOutputDir,'labels', 'classes.txt'),'w',encoding='utf-8') as c:
+        for class_key,_ in class_mapping.items():
+            c.write(f'{class_key}\n')
     with open(output_yoloLabel, 'w',encoding='utf-8') as f:
         f.write("\n".join(yolo_annotations))
     
@@ -146,11 +155,11 @@ def convert(opt):
     
 def parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--labelmeJson',type=str,required=True,help='Directory of Labelme json format labeled files')
-    parser.add_argument('--yoloOutputDir',type=str,default=os.path.join(Root,'YOLO'),help='Specify the directory to output YOLO format')
-    parser.add_argument('--ppocrOutputDir',type=str,default=os.path.join(Root,'PPOCR'),help='Specify the directory to output PPOCR format')
-    parser.add_argument('--classes',type=str,required=True,help='Directory of predefined label txt')
-    parser.add_argument('--image',type=str,required=True,help='Directory of the labeled image')
+    parser.add_argument('--labelmeJson',type=str,default=r'D:\data\Detect\TrkAnnotation\labelme',help='Directory of Labelme json format labeled files')
+    parser.add_argument('--yoloOutputDir',type=str,default=r'D:\data\Detect\OCR_YOLODataset806',help='Specify the directory to output YOLO format')
+    parser.add_argument('--ppocrOutputDir',type=str,default=r'D:\data\Detect\OCR_PPOCRDataset806',help='Specify the directory to output PPOCR format')
+    parser.add_argument('--classes',type=str,default=r'D:\labelme\labels.txt',help='Directory of predefined label txt')
+    parser.add_argument('--image',type=str,default=r'D:\data\Detect\TrkContainDetect',help='Directory of the labeled image')
     opt = parser.parse_args()
     print(opt)
     return opt
