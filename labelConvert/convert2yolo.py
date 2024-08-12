@@ -51,13 +51,13 @@ def convert_labelme(json_file,yoloOutputDir,ppocrOutputDir,class_mapping,image):
             continue
         points = shape['points']
         if shape['shape_type'] == 'polygon':
-            #convert to YOLO format
             x_coords = [p[0] for p in points]
             y_coords = [p[1] for p in points]
             xmin = min(x_coords)
             xmax = max(x_coords)
             ymin = min(y_coords)
             ymax = max(y_coords)
+            
             #convert to PPOCR format
             ppocrPoints = [(round(x), round(y)) for x, y in points]
         elif shape['shape_type'] == 'rectangle':
@@ -93,8 +93,8 @@ def convert_labelme(json_file,yoloOutputDir,ppocrOutputDir,class_mapping,image):
         #yolo bbox format
         x_center = (xmin + xmax) / 2.0 / image_width
         y_center = (ymin + ymax) / 2.0 / image_height
-        width = (xmax - xmin) / image_width
-        height = (ymax - ymin) / image_height
+        width = abs((xmax - xmin) / image_width)
+        height = abs((ymax - ymin) / image_height)
         class_id = class_mapping[label]
         yolo_annotations.append(f"{class_id} {x_center} {y_center} {width} {height}")
        
@@ -155,9 +155,9 @@ def convert(opt):
     
 def parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--labelmeJson',type=str,default=r'D:\data\Detect\TrkAnnotation\labelme',help='Directory of Labelme json format labeled files')
-    parser.add_argument('--yoloOutputDir',type=str,default=r'D:\data\Detect\OCR_YOLODataset806',help='Specify the directory to output YOLO format')
-    parser.add_argument('--ppocrOutputDir',type=str,default=r'D:\data\Detect\OCR_PPOCRDataset806',help='Specify the directory to output PPOCR format')
+    parser.add_argument('--labelmeJson',type=str,default=r'D:\data\Detect\checked\labelme',help='Directory of Labelme json format labeled files')
+    parser.add_argument('--yoloOutputDir',type=str,default=r'D:\data\Detect\OCR_YOLODatasetCheck',help='Specify the directory to output YOLO format')
+    parser.add_argument('--ppocrOutputDir',type=str,default=r'D:\data\Detect\OCR_PPOCRDatasetCheck',help='Specify the directory to output PPOCR format')
     parser.add_argument('--classes',type=str,default=r'D:\labelme\labels.txt',help='Directory of predefined label txt')
     parser.add_argument('--image',type=str,default=r'D:\data\Detect\TrkContainDetect',help='Directory of the labeled image')
     opt = parser.parse_args()

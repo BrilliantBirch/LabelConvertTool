@@ -10,14 +10,14 @@ sys.path.insert(0, parent_dir)
 from common.fileutility import *
 
 imageFolder=r'D:\data\Detect\TrkContainDetect'
-trainData_target='D:\data\Detect\TrkAnnotation'
-labelFolder=r'\\192.168.2.2\临时文件夹\BaiBinnan\已完成标注的图片\20240806'
+trainData_target=r'D:\data\Detect\done\xuhaiyan'
+labelFolder=r'D:\data\Detect\done\xuhaiyan\labelme'
 
 os.makedirs(trainData_target,exist_ok=True)
 count=0
 f_name=[]
 for f in tqdm(os.listdir(labelFolder),'读取标注文件中'):
-    if not f.endswith('.json'):
+    if not f.endswith('.json'): 
         continue
     filename=os.path.splitext(f)[0]
     filename=find_file(imageFolder,filename)
