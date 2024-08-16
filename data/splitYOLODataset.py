@@ -62,7 +62,7 @@ def move_files(filelist,splitname,output):
 
 def splitData(images,output):
     # 计算训练集、验证集和测试集的样本数量
-    split_ratios = {'train': 0.8, 'val': 0.1, 'test': 0.1}
+    split_ratios = {'train': 0.8, 'val': 0.19, 'test': 0.01}
     num_images = len(images)
     num_train = int(num_images * split_ratios['train'])
     num_val = int(num_images * split_ratios['val'])
@@ -88,9 +88,9 @@ def readclassesTxt(classesTxt):
 
 def parsers():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--data',type=str,default=r'D:\data\Detect\OCR_YOLODatasetCheck',help='yolo数据根目录')
-    parser.add_argument('--output',type=str,default=r'D:\data\Detect\OCR_YOLODatasetCheck\split',help='数据集分割导出目录')
-    parser.add_argument('--classesTxt',type=str,default=r'D:\data\Detect\OCR_YOLODatasetCheck\labels\classes.txt',help='classes.txt路径')
+    parser.add_argument('--data',type=str,default=r'E:\OCRSceneImage\TEST',help='yolo数据根目录')
+    parser.add_argument('--output',type=str,default=r'E:\OCRSceneImage\TEST\split',help='数据集分割导出目录')
+    parser.add_argument('--classesTxt',type=str,default=r'E:\OCRSceneImage\TEST\labels\classes.txt',help='classes.txt路径')
     parser.add_argument('--yaml',action='store_true',help='是否导出dataset.yaml')
     opt=parser.parse_args()
     return opt

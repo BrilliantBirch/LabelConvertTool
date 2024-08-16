@@ -109,6 +109,7 @@ def outputLabelmeFormat(annotations,**kwargs):
     outputdir=kwargs.get('outputdir','')
     labelme = labelmeJson(version=version)
     labelme.imagePath=f'..\\{filename}'
+    os.makedirs(outputdir,exist_ok=True)
     jsonname=os.path.join(outputdir,os.path.splitext(filename)[0]+'.json')
     for annotation in annotations:
         label=annotation['class']
@@ -220,11 +221,11 @@ def parser():
     parser.add_argument('--yoloConvert',action='store_true',help='only yolo convert to labelme')
     parser.add_argument('--ppocrConvert',action='store_true',help='only ppocr convert to labelme')
     parser.add_argument('--version',type=str,default='5.4.1',help='version of labelme')
-    parser.add_argument('--yoloLabels',type=str,default=r'',help='Directory of yolo to be converted')
-    parser.add_argument('--imageFolder',type=str,default=r'',help='Image set')
-    parser.add_argument('--predefinedClass',type=str,default=r'',help='Predefined classes text files')
-    parser.add_argument('--outputdir',type=str,default=r'',help='labelme json output dir')
-    parser.add_argument('--ppocrLabels',type=str,default=r'',help='Directory of ppocr to be converted')
+    parser.add_argument('--yoloLabels',type=str,default=r'E:\yolov5-7.0\runs\detect\TrkAndContDetct_yolov5l_usepretrain\labels',help='Directory of yolo to be converted')
+    parser.add_argument('--imageFolder',type=str,default=r'D:\data\Detect\TrkContainDetect_origin2400',help='Image set')
+    parser.add_argument('--predefinedClass',type=str,default=r'D:\labelme\labels.txt',help='Predefined classes text files')
+    parser.add_argument('--outputdir',type=str,default=r'E:\OCRSceneImage\TrainData\YOLO\test\labelme',help='labelme json output dir')
+    parser.add_argument('--ppocrLabels',type=str,default=r'E:\OCRSceneImage\TrainData\YOLO\test\ppocr\system_results.txt',help='Directory of ppocr to be converted')
     opt = parser.parse_args()
     print(opt)
     return opt

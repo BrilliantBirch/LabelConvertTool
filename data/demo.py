@@ -9,9 +9,9 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 from common.fileutility import *
 
-imageFolder=r'D:\data\Detect\TrkContainDetect'
-trainData_target=r'D:\data\Detect\done\xuhaiyan'
-labelFolder=r'D:\data\Detect\done\xuhaiyan\labelme'
+imageFolder=r'D:\data\Detect\TrkContainDetect_origin2400'
+trainData_target=r'D:\data\output'
+labelFolder=r'E:\LabelConvertTool\labelConvert\labelme'
 
 os.makedirs(trainData_target,exist_ok=True)
 count=0
