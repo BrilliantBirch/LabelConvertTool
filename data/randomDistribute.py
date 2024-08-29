@@ -31,7 +31,7 @@ def split_and_store_images(source_dir, target_base_dir, num_parts):
         target_dir = os.path.join(target_base_dir, f'part_{i+1}')
         os.makedirs(target_dir, exist_ok=True)
         
-        for file_name in tqdm(part_files,f'第{i}份，共{num_parts}份'):
+        for file_name in tqdm(part_files,f'第{i+1}份，共{num_parts}份'):
             source_path = os.path.join(source_dir, file_name)
             target_path = os.path.join(target_dir, file_name)
             shutil.move(source_path, target_path)
@@ -39,12 +39,12 @@ def split_and_store_images(source_dir, target_base_dir, num_parts):
         start = end
 def parser():
     parsers = argparse.ArgumentParser()
-    parsers.add_argument('--source',type=str,default=r'',help='源文件夹路径')
-    parsers.add_argument('--target',type=str,default=r'',help='目标文件夹路径')
-    parsers.add_argument('--nums',type=int,default=3,help='要均分的人数')
+    parsers.add_argument('--source',type=str,default=r'E:\OCRSceneImage\prelabel',help='源文件夹路径')
+    parsers.add_argument('--target',type=str,default=r'E:\OCRSceneImage\12fragments',help='目标文件夹路径')
+    parsers.add_argument('--nums',type=int,default=12,help='要均分的人数')
     
     opt = parsers.parse_args()
-
+    return opt
 def main():
     opt=parser()
     

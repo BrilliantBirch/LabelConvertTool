@@ -1,3 +1,6 @@
+"""
+根据labelme标注文件 分配图片
+"""
 import os
 import shutil
 import sys

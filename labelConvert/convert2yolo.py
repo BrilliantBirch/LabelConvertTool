@@ -155,11 +155,11 @@ def convert(opt):
     
 def parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--labelmeJson',type=str,default=r'D:\data\Detect\checked\labelme',help='Directory of Labelme json format labeled files')
-    parser.add_argument('--yoloOutputDir',type=str,default=r'E:\OCRSceneImage\TrainData\YOLO',help='Specify the directory to output YOLO format')
-    parser.add_argument('--ppocrOutputDir',type=str,default=r'E:\OCRSceneImage\TrainData\PPOCR',help='Specify the directory to output PPOCR format')
+    parser.add_argument('--labelmeJson',type=str,default=r'E:\OCRSceneImage\9000imgs\labelme',help='Directory of Labelme json format labeled files')
+    parser.add_argument('--yoloOutputDir',type=str,default=r'E:\OCRSceneImage\9000imgs\YOLO',help='Specify the directory to output YOLO format')
+    parser.add_argument('--ppocrOutputDir',type=str,default=r'E:\OCRSceneImage\9000imgs\PPOCR',help='Specify the directory to output PPOCR format')
     parser.add_argument('--classes',type=str,default=r'D:\labelme\labels.txt',help='Directory of predefined label txt')
-    parser.add_argument('--image',type=str,default=r'D:\data\Detect\TrkContainDetect',help='Directory of the labeled image')
+    parser.add_argument('--image',type=str,default=r'E:\OCRSceneImage\9000imgs',help='Directory of the labeled image')
     opt = parser.parse_args()
     print(opt)
     return opt
